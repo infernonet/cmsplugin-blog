@@ -13,9 +13,9 @@ blog_info_dict = {
 
 
 
-def language_changer(lang):
-    request = language_changer.request
-    return request.get_full_path()
+#def language_changer(lang):
+#    request = language_changer.request
+#    return request.get_full_path()
 
 
 blog_detail = EntryDateDetailView.as_view(

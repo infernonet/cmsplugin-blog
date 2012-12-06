@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.query import QuerySet
 from django.conf import settings
-from django.utils.translation import get_language, ugettext_lazy as _
+from django.utils.translation import get_language, activate, ugettext_lazy as _
 
 from cms.utils.placeholder import PlaceholderNoAction
 from cms.utils.urlutils import urljoin
@@ -57,15 +57,16 @@ class Entry(models.Model):
             language = get_language()
         try:
             url = self.entrytitle_set.get(language=language).get_absolute_url()
-            if url[1:len(language)+1] == language:
-                url = url[len(language)+1:]
             return url
         except EntryTitle.DoesNotExist:
             return ''
 
     def language_changer(self, language):
+        old_lang = get_language()
+        activate(language)
         url = self.get_absolute_url(language)
         if url:
+            activate(old_lang)
             return url
 
         # There is no entry in the given language, we return blog's root
@@ -79,7 +80,9 @@ class Entry(models.Model):
             # Blog app hook not defined anywhere?
             pass
 
-        return blog_prefix or reverse('pages-root')
+        ret = blog_prefix or reverse('pages-root')
+        activate(old_lang)
+        return ret
         
     def _template(self):
         from simple_translation.utils import get_translated_model
@@ -108,16 +111,10 @@ class AbstractEntryTitle(models.Model):
         return self.title
 
     def _get_absolute_url(self):
-        language_namespace = 'cmsplugin_blog.middleware.MultilingualBlogEntriesMiddleware' in settings.MIDDLEWARE_CLASSES and '%s:' % self.language or ''
-        if timezone:
-            local_pub_date = timezone.localtime(self.entry.pub_date)
-        else:
-            local_pub_date = self.entry.pub_date
-
-        return ('%sblog_detail' % language_namespace, (), {
-            'year': local_pub_date.year,
-            'month': local_pub_date.strftime('%m'),
-            'day': local_pub_date.strftime('%d'),
+        return ('blog_detail', (), {
+            'year': self.entry.pub_date.strftime('%Y'),
+            'month': self.entry.pub_date.strftime('%m'),
+            'day': self.entry.pub_date.strftime('%d'),
             'slug': self.slug
         })
     get_absolute_url = models.permalink(_get_absolute_url)
