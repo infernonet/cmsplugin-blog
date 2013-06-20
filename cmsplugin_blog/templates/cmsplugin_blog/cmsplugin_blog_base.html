@@ -2,4 +2,10 @@
 {{ block.super }}
 <link rel="alternate" type="application/rss+xml" title="RSS feed" href="{% url 'blog_rss' %}" />
 <link rel="alternate" type="application/rss+xml" title="RSS feed (any language)" href="{% url 'blog_rss_any' %}" />
+
 {% endblock extrahead %}
+
+{% block body %}
+    {% block left-col %}{% endblock %}
+    {% block right-col %}{% endblock %}
+{% endblock %}
