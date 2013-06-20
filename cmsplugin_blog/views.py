@@ -3,12 +3,12 @@ from django.views.generic.list import ListView
 from tagging.models import Tag, TaggedItem
 from tagging.utils import get_tag
 
-try: # pragma: no cover
-    from django.views.generic.dates import BaseDateDetailView, ArchiveIndexView, _date_lookup_for_field, _date_from_string, YearArchiveView, MonthArchiveView, WeekArchiveView, DayArchiveView
-    from django.views.generic.detail import SingleObjectTemplateResponseMixin, DetailView
-except ImportError:  # pragma: no cover
-    from cbv.views.detail import SingleObjectTemplateResponseMixin, DetailView
-    from cbv.views.dates import BaseDateDetailView, ArchiveIndexView, YearArchiveView, MonthArchiveView, WeekArchiveView, DayArchiveView, _date_lookup_for_field, _date_from_string
+#try: # pragma: no cover
+from django.views.generic.dates import BaseDateDetailView, ArchiveIndexView,  _date_from_string, YearArchiveView, MonthArchiveView, WeekArchiveView, DayArchiveView
+from django.views.generic.detail import SingleObjectTemplateResponseMixin, DetailView
+#except ImportError:  # pragma: no cover
+#    from cbv.views.detail import SingleObjectTemplateResponseMixin, DetailView
+#    from cbv.views.dates import BaseDateDetailView, ArchiveIndexView, YearArchiveView, MonthArchiveView, WeekArchiveView, DayArchiveView, _date_lookup_for_field, _date_from_string
 
 from django.http import Http404
 from django.shortcuts import redirect
@@ -52,10 +52,10 @@ class DateDetailView(SingleObjectTemplateResponseMixin, BaseDateDetailView):
         # Filter down a queryset from self.queryset using the date from the
         # URL. This'll get passed as the queryset to DetailView.get_object,
         # which'll handle the 404
-        date_field = self.get_date_field()
-        field = queryset.model._meta.get_field(date_field)
-        lookup = _date_lookup_for_field(field, date)
-        queryset = queryset.filter(**lookup)
+#        date_field = self.get_date_field()
+#        field = queryset.model._meta.get_field(date_field)
+#        lookup = _date_lookup_for_field(field, date)
+#        queryset = queryset.filter(**lookup)
 
         return super(BaseDateDetailView, self).get_object(queryset=queryset)
     
