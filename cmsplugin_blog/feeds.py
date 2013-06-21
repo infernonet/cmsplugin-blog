@@ -106,7 +106,7 @@ class AuthorEntriesFeed(EntriesFeed):
         return add_current_root(reverse('blog_rss_author', kwargs={'author': self.author}))
     
     def link(self, obj):
-        return add_current_root(reverse('blog_archive_author', kwargs={'author': self.author}))
+        return add_current_root(reverse('blog_archive_author', kwargs={'slug': self.author}))
     
     def description(self, obj):
         description = super(AuthorEntriesFeed, self).description(obj)

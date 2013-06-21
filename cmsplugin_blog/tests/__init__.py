@@ -260,7 +260,7 @@ class ViewsTestCase(BaseBlogTestCase):
         
         response = self.client.get(reverse('blog_archive_author',
             kwargs={
-                'author': user.username
+                'slug': user.username
             }))
         self.assertEquals(response.status_code, 200)
         
