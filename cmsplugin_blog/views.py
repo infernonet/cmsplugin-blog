@@ -147,7 +147,7 @@ class BlogDayArchiveView(BlogArchiveMixin, DayArchiveView):
     template_name = 'cmsplugin_blog/entry_archive_day.html'
 
 
-class BlogAuthorArchiveView(DetailView):
+class BlogAuthorArchiveView(ListView):
     model = Entry
     allow_empty = True,
     slug_field = 'entrytitle__author__username'
