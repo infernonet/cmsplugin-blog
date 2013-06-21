@@ -6,7 +6,6 @@ from django.db.models.query import QuerySet
 from django.conf import settings
 from django.utils.translation import get_language, activate, ugettext_lazy as _
 
-from cms.utils.placeholder import PlaceholderNoAction
 from cms.utils.urlutils import urljoin
 
 from cms.models import CMSPlugin, Title
