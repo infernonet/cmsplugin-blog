@@ -41,7 +41,7 @@ urlpatterns = patterns('',
         
     url(r'^tagged/(?P<tag>[^/]*)/$', BlogTaggedArchiveView.as_view(), name='blog_archive_tagged'),
 
-    url(r'^author/(?P<author>[^/]*)/$', BlogAuthorArchiveView.as_view(), name='blog_archive_author'),
+    url(r'^author/(?P<slug>[^/]*)/$', BlogAuthorArchiveView.as_view(), name='blog_archive_author'),
     
     url(r'^rss/any/tagged/(?P<tag>[^/]*)/$', TaggedEntriesFeed(), {'any_language': True}, name='blog_rss_any_tagged'),
     

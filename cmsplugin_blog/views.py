@@ -150,17 +150,19 @@ class BlogDayArchiveView(BlogArchiveMixin, DayArchiveView):
 class BlogAuthorArchiveView(DetailView):
     model = Entry
     allow_empty = True,
+    slug_field = 'entrytitle__author__username'
     template_name = 'cmsplugin_blog/entry_author_list.html',
 
     def get_queryset(self):
-        author = self.kwargs['author']
+        author = self.kwargs['slug']
         queryset = super(BlogAuthorArchiveView, self).get_queryset().published().filter(entrytitle__author__username=author)
         if queryset:
             set_language_changer(self.request, queryset[0].language_changer)
         return queryset
 
     def get_context_data(self, **kwargs):
-        return super(BlogAuthorArchiveView, self).get_context_data(author=self.kwargs['author'], **kwargs)
+        return super(BlogAuthorArchiveView,
+                     self).get_context_data(author=self.kwargs['slug'], **kwargs)
 
 
 class TaggedObjectList(ListView):
