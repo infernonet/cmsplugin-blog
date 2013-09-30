@@ -58,14 +58,14 @@ class DateDetailView(SingleObjectTemplateResponseMixin, BaseDateDetailView):
 #        queryset = queryset.filter(**lookup)
 
         return super(BaseDateDetailView, self).get_object(queryset=queryset)
-    
+
 class EntryDateDetailView(DateDetailView):
     slug_field = get_translation_filter(Entry, slug=None).items()[0][0]
     date_field = 'pub_date'
     template_name_field = 'template'
     month_format = '%m'
     queryset = Entry.objects.all()
-    
+
     def get_object(self):
         try:
             obj = super(EntryDateDetailView, self).get_object()
@@ -86,10 +86,10 @@ class EntryDateDetailView(DateDetailView):
 
         set_language_changer(self.request, obj.language_changer)
         return obj
-        
+
     def get_unfiltered_queryset(self):
         return super(EntryDateDetailView, self).get_queryset().published()
-            
+
     def get_queryset(self):
         queryset = super(EntryDateDetailView, self).get_queryset()
         queryset = filter_queryset_language(self.request, queryset)
@@ -97,7 +97,7 @@ class EntryDateDetailView(DateDetailView):
             return queryset
         else:
             return queryset.published()
-    
+
     def dispatch(self, request, *args, **kwargs):
         try:
             return super(EntryDateDetailView, self).dispatch(request, *args, **kwargs)
@@ -154,7 +154,7 @@ class BlogAuthorArchiveView(ListView):
     template_name = 'cmsplugin_blog/entry_author_list.html',
 
     def get_queryset(self):
-        author = self.kwargs['slug']
+        author = self.kwargs['author']
         queryset = super(BlogAuthorArchiveView, self).get_queryset().published().filter(entrytitle__author__username=author)
         if queryset:
             set_language_changer(self.request, queryset[0].language_changer)
@@ -162,7 +162,7 @@ class BlogAuthorArchiveView(ListView):
 
     def get_context_data(self, **kwargs):
         return super(BlogAuthorArchiveView,
-                     self).get_context_data(author=self.kwargs['slug'], **kwargs)
+                     self).get_context_data(author=self.kwargs['author'], **kwargs)
 
 
 class TaggedObjectList(ListView):
