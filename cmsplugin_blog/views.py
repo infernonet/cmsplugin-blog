@@ -193,6 +193,7 @@ class TaggedObjectList(ListView):
                 context['queryset'],
                 counts=self.related_tag_counts,
             )
+        context['tag'] = tag
         return context
 
     def get_queryset(self):
