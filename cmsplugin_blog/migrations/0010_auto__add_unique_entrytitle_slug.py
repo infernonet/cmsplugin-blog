@@ -7,13 +7,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Adding unique constraint on 'EntryTitle', fields ['slug']
         db.create_unique('cmsplugin_blog_entrytitle', ['slug'])
 
 
     def backwards(self, orm):
-        
+
         # Removing unique constraint on 'EntryTitle', fields ['slug']
         db.delete_unique('cmsplugin_blog_entrytitle', ['slug'])
 
@@ -43,7 +43,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('-pub_date',)", 'object_name': 'Entry'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_published': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'placeholders': ('djangocms_utils.fields.M2MPlaceholderField', [], {'to': "orm['cms.Placeholder']", 'symmetrical': 'False'}),
+            'placeholders': ('cmsplugin_blog.fields.M2MPlaceholderField', [], {'to': "orm['cms.Placeholder']", 'symmetrical': 'False'}),
             'pub_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'tags': ('tagging.fields.TagField', [], {})
         },

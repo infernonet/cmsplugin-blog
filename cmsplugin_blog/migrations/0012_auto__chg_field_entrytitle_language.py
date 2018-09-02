@@ -7,13 +7,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Changing field 'EntryTitle.language'
         db.alter_column('cmsplugin_blog_entrytitle', 'language', self.gf('django.db.models.fields.CharField')(max_length=15))
 
 
     def backwards(self, orm):
-        
+
         # Changing field 'EntryTitle.language'
         db.alter_column('cmsplugin_blog_entrytitle', 'language', self.gf('django.db.models.fields.CharField')(max_length=2))
 
@@ -72,7 +72,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('-pub_date',)", 'object_name': 'Entry'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_published': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'placeholders': ('djangocms_utils.fields.M2MPlaceholderField', [], {'to': "orm['cms.Placeholder']", 'symmetrical': 'False'}),
+            'placeholders': ('cmsplugin_blog.fields.M2MPlaceholderField', [], {'to': "orm['cms.Placeholder']", 'symmetrical': 'False'}),
             'pub_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'tags': ('tagging.fields.TagField', [], {})
         },

@@ -11,7 +11,6 @@ Requirements
 ************
 
 * `django CMS`_ 2.2
-* `djangocms-utils`_ 0.9.5+
 * `simple-translation`_ 0.8.5+
 * `jQuery`_ 1.4.4+
 * `jQuery UI`_ 1.8.1+
@@ -27,7 +26,6 @@ On Django 1.2.7:
 .. _django CMS: https://www.django-cms.org/
 .. _django-staticfiles: http://pypi.python.org/pypi/django-staticfiles/
 .. _django-tagging: http://code.google.com/p/django-tagging/
-.. _djangocms-utils: https://github.com/fivethreeo/djangocms-utils
 .. _simple-translation: https://github.com/fivethreeo/simple-translation
 .. _jQuery: http://jquery.com/
 .. _jQuery UI: http://jqueryui.com/
@@ -42,7 +40,7 @@ Install ``cmsplugin-blog`` from pypi: ::
 
     pip install cmsplugin-blog
 
-.. note :: When installing the cmsplugin-blog using pip `django-tagging`_, `django-missing`_, `djangocms-utils`_, and `simple-translation`_ will be installed automatically.
+.. note :: When installing the cmsplugin-blog using pip `django-tagging`_, `django-missing`_ and `simple-translation`_ will be installed automatically.
 
 ***********************
 Configuration and setup
@@ -54,7 +52,6 @@ Add the following apps to your :setting:`django:INSTALLED_APPS` which enable cms
 and required or highly recommended applications/libraries):
 
 * ``'cmsplugin_blog'``, cmsplugin-blog itself
-* ``'djangocms_utils'``, utilities and extensions to django CMS
 * ``'simple_translation'``, enables multilingual features
 * ``'tagging'``, enables tagging of posts
 * ``'staticfiles'``, for serving static files ::
@@ -66,7 +63,6 @@ Add required settings::
     INSTALLED_APPS = (
         ...
         'cmsplugin_blog',
-        'djangocms_utils',
         'simple_translation',
         'tagging',
         'staticfiles',

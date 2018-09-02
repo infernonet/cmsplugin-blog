@@ -7,13 +7,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Adding field 'EntryTitle.author'
         db.add_column('cmsplugin_blog_entrytitle', 'author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, blank=True), keep_default=False)
 
 
     def backwards(self, orm):
-        
+
         # Deleting field 'EntryTitle.author'
         db.delete_column('cmsplugin_blog_entrytitle', 'author_id')
 
@@ -72,7 +72,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('-pub_date',)", 'object_name': 'Entry'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_published': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'placeholders': ('djangocms_utils.fields.M2MPlaceholderField', [], {'to': "orm['cms.Placeholder']", 'symmetrical': 'False'}),
+            'placeholders': ('cmsplugin_blog.fields.M2MPlaceholderField', [], {'to': "orm['cms.Placeholder']", 'symmetrical': 'False'}),
             'pub_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'tags': ('tagging.fields.TagField', [], {})
         },

@@ -8,15 +8,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.admin',
-    'django.contrib.sites',        
+    'django.contrib.sites',
     'cms',
     'cms.plugins.text',
     'mptt',
     'menus',
     'tagging',
-    'simple_translation',    
+    'simple_translation',
     'cmsplugin_blog',
-    'djangocms_utils',
     'sekizai'
 ]
 
@@ -57,11 +56,11 @@ else:
     INSTALLED_APPS.append('django.contrib.staticfiles')
     TEMPLATE_CONTEXT_PROCESSORS.insert(0,'django.contrib.auth.context_processors.auth')
     TEMPLATE_CONTEXT_PROCESSORS.append('django.core.context_processors.static')
-    
+
 def run_tests():
-    
+
     from django.conf import settings
-    
+
     settings.configure(
         SITE_ID = 1,
         INSTALLED_APPS=INSTALLED_APPS,
@@ -92,7 +91,7 @@ def run_tests():
         TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner',
         TEST_OUTPUT_VERBOSE = True
     )
-    
+
     from django.test.utils import get_runner
 
     failures = get_runner(settings)().run_tests(['cmsplugin_blog'])
