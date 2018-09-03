@@ -1,60 +1,68 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
-
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-        
-        # Adding model 'Entry'
-        db.create_table('cmsplugin_blog_entry', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cms.Placeholder'], null=True)),
-        ))
-        db.send_create_signal('cmsplugin_blog', ['Entry'])
-
-        # Adding model 'EntryTitle'
-        db.create_table('cmsplugin_blog_entrytitle', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('entry', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cmsplugin_blog.Entry'])),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=2)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, db_index=True)),
-        ))
-        db.send_create_signal('cmsplugin_blog', ['EntryTitle'])
+from django.conf import settings
+import cmsplugin_blog.fields
+import tagging.fields
 
 
-    def backwards(self, orm):
-        
-        # Deleting model 'Entry'
-        db.delete_table('cmsplugin_blog_entry')
+class Migration(migrations.Migration):
 
-        # Deleting model 'EntryTitle'
-        db.delete_table('cmsplugin_blog_entrytitle')
+    dependencies = [
+        ('cms', '0003_auto_20140926_2347'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
 
-
-    models = {
-        'cms.placeholder': {
-            'Meta': {'object_name': 'Placeholder'},
-            'default_width': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'slot': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'})
-        },
-        'cmsplugin_blog.entry': {
-            'Meta': {'object_name': 'Entry'},
-            'content': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cms.Placeholder']", 'null': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
-        'cmsplugin_blog.entrytitle': {
-            'Meta': {'object_name': 'EntryTitle'},
-            'entry': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cmsplugin_blog.Entry']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        }
-    }
-
-    complete_apps = ['cmsplugin_blog']
+    operations = [
+        migrations.CreateModel(
+            name='Entry',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('is_published', models.BooleanField(verbose_name='is published')),
+                ('pub_date', models.DateTimeField(default=datetime.datetime.now, verbose_name='publish at')),
+                ('tags', tagging.fields.TagField(max_length=255, blank=True)),
+                ('placeholders', cmsplugin_blog.fields.M2MPlaceholderField(to='cms.Placeholder', editable=False)),
+            ],
+            options={
+                'ordering': ('-pub_date',),
+                'verbose_name': 'entry',
+                'verbose_name_plural': 'entries',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='EntryTitle',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('language', models.CharField(max_length=15, verbose_name='language', choices=[(b'pl', b'Polski')])),
+                ('title', models.CharField(max_length=255, verbose_name='title')),
+                ('slug', models.SlugField(max_length=255, verbose_name='slug')),
+                ('author', models.ForeignKey(verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('entry', models.ForeignKey(verbose_name='entry', to='cmsplugin_blog.Entry')),
+            ],
+            options={
+                'verbose_name': 'blogentry',
+                'verbose_name_plural': 'blogentries',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='LatestEntriesPlugin',
+            fields=[
+                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
+                ('limit', models.PositiveIntegerField(help_text='Limits the number of items that will be displayed', verbose_name='Number of entries items to show')),
+                ('current_language_only', models.BooleanField(verbose_name='Only show entries for the current language')),
+                ('tagged', models.CharField(max_length=255, blank=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=('cms.cmsplugin',),
+        ),
+        migrations.AlterUniqueTogether(
+            name='entrytitle',
+            unique_together=set([('language', 'slug')]),
+        ),
+    ]
