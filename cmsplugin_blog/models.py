@@ -28,15 +28,15 @@ class PublishedEntriesQueryset(QuerySet):
 
 class EntriesManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return PublishedEntriesQueryset(self.model)
 
 class PublishedEntriesManager(EntriesManager):
     """
         Filters out all unpublished and items with a publication date in the future
     """
-    def get_query_set(self):
-        return super(PublishedEntriesManager, self).get_query_set().published()
+    def get_queryset(self):
+        return super(PublishedEntriesManager, self).get_queryset().published()
 
 CMSPLUGIN_BLOG_PLACEHOLDERS = getattr(settings, 'CMSPLUGIN_BLOG_PLACEHOLDERS', ('excerpt', 'content'))
 
