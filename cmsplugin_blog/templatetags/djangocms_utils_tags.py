@@ -1,7 +1,7 @@
 from django import template
 from classytags.arguments import Argument
 from classytags.core import Options
-from cms.templatetags.placeholder_tags import RenderPlaceholder
+from cms.templatetags.cms_tags import RenderPlaceholder
 from cms.models import Placeholder
 register = template.Library()
 
