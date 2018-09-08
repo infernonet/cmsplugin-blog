@@ -4,6 +4,8 @@ from django.utils.translation import ugettext_lazy as _
 
 class BlogApphook(CMSApp):
     name = _("Blog Apphook")
-    urls = ["cmsplugin_blog.urls"]
+
+    def get_urls(self, page=None, language=None, **kwargs):
+        return  ['cmsplugin_blog.urls']
 
 apphook_pool.register(BlogApphook)
