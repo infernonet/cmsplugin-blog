@@ -1,9 +1,7 @@
 # from cms.forms.widgets import PlaceholderPluginEditorWidget
 from cms.models.pluginmodel import CMSPlugin
-from cms.utils import get_language_from_request
-from cmsplugin_blog.models import Entry, EntryTitle
+from cmsplugin_blog.models import Entry
 from cmsplugin_blog.widgets import AutoCompleteTagInput
-from django import forms
 from django.contrib import admin
 from django.conf import settings
 from django.forms import CharField
@@ -20,6 +18,7 @@ class EntryForm(TranslationModelForm):
     class Meta:
         model = Entry
         widgets = {'tags': AutoCompleteTagInput}
+        exclude = []
 
 class M2MPlaceholderAdmin(PlaceholderTranslationAdmin):
 
