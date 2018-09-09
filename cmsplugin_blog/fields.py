@@ -42,7 +42,7 @@ class M2MPlaceholderField(models.ManyToManyField):
         if 'to' in kwargs:
             del kwargs['to']
 
-        super(M2MPlaceholderField, self).__init__(Placeholder, **kwargs)
+        super(M2MPlaceholderField, self).__init__('cms.Placeholder', **kwargs)
 
     def contribute_to_related_class(self, cls, related):
         setattr(cls, '_get_attached_field', _get_attached_field)

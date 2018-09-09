@@ -1,4 +1,4 @@
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -25,7 +25,7 @@ class EntriesFeed(Feed):
         if self.any_language:
             return add_current_root(reverse('blog_rss_any'))
         return add_current_root(reverse('blog_rss'))
-        
+
     def title(self, obj):
         if self.any_language or not is_multilingual():
             return _(u"%(site)s blog entries") % {'site': self.site.name}
@@ -75,7 +75,7 @@ class TaggedEntriesFeed(EntriesFeed):
         if self.any_language:
             return add_current_root(reverse('blog_rss_any_tagged', kwargs={'tag': self.tag}))
         return add_current_root(reverse('blog_rss_tagged', kwargs={'tag': self.tag}))
-        
+
     def link(self, obj):
         return add_current_root(reverse('blog_archive_tagged', kwargs={'tag': self.tag}))
 
@@ -104,10 +104,10 @@ class AuthorEntriesFeed(EntriesFeed):
         if self.any_language:
             return add_current_root(reverse('blog_rss_any_author', kwargs={'author': self.author}))
         return add_current_root(reverse('blog_rss_author', kwargs={'author': self.author}))
-    
+
     def link(self, obj):
         return add_current_root(reverse('blog_archive_author', kwargs={'slug': self.author}))
-    
+
     def description(self, obj):
         description = super(AuthorEntriesFeed, self).description(obj)
         return _(u'%(description)s by %(author)s') % {'description': description, 'author': self.author}
