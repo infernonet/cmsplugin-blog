@@ -97,7 +97,7 @@ class BaseEntryAdmin(M2MPlaceholderAdmin):
     form = EntryForm
 
     # needed because of admin validation
-    prepopulated_fields = not settings.DEBUG and {'slug': ('title',)} or {}
+    prepopulated_fields = {} # not settings.DEBUG and {'slug': ('title',)} or {}
 
     search_fields = ('entrytitle__title', 'tags')
     list_display = ('title', 'languages', 'author', 'is_published', 'pub_date')

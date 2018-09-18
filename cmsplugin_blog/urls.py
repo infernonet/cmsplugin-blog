@@ -1,4 +1,4 @@
-from django.conf.urls import url, patterns
+from django.conf.urls import url
 
 from cmsplugin_blog.feeds import EntriesFeed, TaggedEntriesFeed, AuthorEntriesFeed
 from cmsplugin_blog.models import Entry
@@ -25,7 +25,7 @@ blog_detail = EntryDateDetailView.as_view(
     slug_field='entrytitle__slug',
 )
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', EntryArchiveIndexView.as_view(), blog_info_dict, name='blog_archive_index'),
 
     url(r'^(?P<year>\d{4})/$', BlogYearArchiveView.as_view(), name='blog_archive_year'),
@@ -54,4 +54,4 @@ urlpatterns = patterns('',
     url(r'^rss/any/$', EntriesFeed(), {'any_language': True}, name='blog_rss_any'),
 
     url(r'^rss/$', EntriesFeed(), name='blog_rss'),
-)
+]

@@ -1,13 +1,26 @@
 from django.db import models
 from django.conf import settings
 
-from cms.models import Placeholder
 
 def _get_attached_field(self):
     from cms.models import CMSPlugin
     if not hasattr(self, '_attached_field_cache'):
         self._attached_field_cache = None
-        for rel in self._meta.get_all_related_objects() + self._meta.get_all_related_many_to_many_objects():
+
+        opts = self._meta
+
+        all_related_objects = [
+            f for f in opts.get_fields()
+            if (f.one_to_many or f.one_to_one)
+            and f.auto_created and not f.concrete
+        ]
+
+        all_related_many_to_many_objects = [
+            f for f in opts.get_fields(include_hidden=True)
+            if f.many_to_many and f.auto_created
+        ]
+
+        for rel in all_related_objects + all_related_many_to_many_objects:
             if issubclass(rel.model, CMSPlugin):
                 continue
             field = getattr(self, rel.get_accessor_name())
@@ -20,7 +33,21 @@ def _get_attached_fields(self):
     Returns an ITERATOR of all non-cmsplugin reverse foreign key related fields.
     """
     from cms.models import CMSPlugin
-    for rel in self._meta.get_all_related_objects() + self._meta.get_all_related_many_to_many_objects():
+
+    opts = self._meta
+
+    all_related_objects = [
+        f for f in opts.get_fields()
+        if (f.one_to_many or f.one_to_one)
+        and f.auto_created and not f.concrete
+    ]
+
+    all_related_many_to_many_objects = [
+        f for f in opts.get_fields(include_hidden=True)
+        if f.many_to_many and f.auto_created
+    ]
+
+    for rel in all_related_objects + all_related_many_to_many_objects:
         if issubclass(rel.model, CMSPlugin):
             continue
         field = getattr(self, rel.get_accessor_name())
