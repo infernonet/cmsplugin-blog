@@ -60,7 +60,7 @@ class DateDetailView(SingleObjectTemplateResponseMixin, BaseDateDetailView):
         return super(BaseDateDetailView, self).get_object(queryset=queryset)
 
 class EntryDateDetailView(DateDetailView):
-    slug_field = get_translation_filter(Entry, slug=None).items()[0][0]
+    slug_field = list(get_translation_filter(Entry, slug=None).items())[0][0]
     date_field = 'pub_date'
     template_name_field = 'template'
     month_format = '%m'
