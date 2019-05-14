@@ -69,7 +69,7 @@ class EntryDateDetailView(DateDetailView):
     def get_object(self):
         try:
             obj = super(EntryDateDetailView, self).get_object()
-        except Http404, e:
+        except Http404 as e:
             # No entry has been found for a given language, we fallback to search for an entry in any language
             # Could find multiple entries, in this way we cannot decide which one is the right one, so we let
             # exception be propagated FIXME later
@@ -77,7 +77,7 @@ class EntryDateDetailView(DateDetailView):
                 try:
                     queryset = self.get_unfiltered_queryset()
                     obj = super(EntryDateDetailView, self).get_object(queryset=queryset)
-                except Entry.MultipleObjectsReturned, s:
+                except Entry.MultipleObjectsReturned as s:
                     raise e
                 # We know there is only one title for this entry, so we can simply use get()
                 raise Redirect(obj.entrytitle_set.get().get_absolute_url())
@@ -101,7 +101,7 @@ class EntryDateDetailView(DateDetailView):
     def dispatch(self, request, *args, **kwargs):
         try:
             return super(EntryDateDetailView, self).dispatch(request, *args, **kwargs)
-        except Redirect, e:
+        except Redirect as e:
             return redirect(*e.args, **e.kwargs)
 
 class EntryArchiveIndexView(ArchiveIndexView):
