@@ -1,6 +1,6 @@
 import datetime
 
-from django.core.urlresolvers import reverse
+from django import urls
 from django.db import models
 from django.db.models.query import QuerySet
 from django.conf import settings
@@ -77,12 +77,12 @@ class Entry(models.Model):
 
         try:
             title = Title.objects.get(application_urls='BlogApphook', language=language)
-            blog_prefix = urljoin(reverse('pages-root'), title.overwrite_url or title.slug)
+            blog_prefix = urljoin(urls.reverse('pages-root'), title.overwrite_url or title.slug)
         except Title.DoesNotExist:
             # Blog app hook not defined anywhere?
             pass
 
-        ret = blog_prefix or reverse('pages-root')
+        ret = blog_prefix or urls.reverse('pages-root')
         activate(old_lang)
         return ret
 
@@ -103,11 +103,21 @@ class AbstractEntryTitle(models.Model):
 
     DETAIL_TEMPLATE = 'cmsplugin_blog/entry_detail.html'
 
-    entry = models.ForeignKey(Entry, verbose_name=_('entry'))
+    entry = models.ForeignKey(
+        Entry,
+        verbose_name=_('entry'),
+        on_delete=models.CASCADE
+    )
     language = models.CharField(_('language'), max_length=15, choices=settings.LANGUAGES)
     title = models.CharField(_('title'), max_length=255)
     slug = models.SlugField(_('slug'), max_length=255)
-    author = models.ForeignKey('auth.User', null=True, blank=True, verbose_name=_("author"))
+    author = models.ForeignKey(
+        'auth.User',
+        null=True,
+        blank=True,
+        verbose_name=_("author"),
+        on_delete=models.CASCADE
+    )
 
     def __unicode__(self):
         return self.title
@@ -122,7 +132,10 @@ class AbstractEntryTitle(models.Model):
             'day': self.entry.pub_date.strftime('%d'),
             'slug': self.slug
         })
-    get_absolute_url = models.permalink(_get_absolute_url)
+
+    @property
+    def get_absolute_url(self):
+        return urls.reverse(*(self._get_absolute_url()))
 
     class Meta:
         unique_together = ('language', 'slug')

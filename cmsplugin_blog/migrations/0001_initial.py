@@ -39,8 +39,8 @@ class Migration(migrations.Migration):
                 ('language', models.CharField(max_length=15, verbose_name='language', choices=[(b'pl', b'Polski')])),
                 ('title', models.CharField(max_length=255, verbose_name='title')),
                 ('slug', models.SlugField(max_length=255, verbose_name='slug')),
-                ('author', models.ForeignKey(verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('entry', models.ForeignKey(verbose_name='entry', to='cmsplugin_blog.Entry')),
+                ('author', models.ForeignKey(verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
+                ('entry', models.ForeignKey(verbose_name='entry', to='cmsplugin_blog.Entry', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'blogentry',
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LatestEntriesPlugin',
             fields=[
-                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
+                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin', on_delete=models.CASCADE)),
                 ('limit', models.PositiveIntegerField(help_text='Limits the number of items that will be displayed', verbose_name='Number of entries items to show')),
                 ('current_language_only', models.BooleanField(verbose_name='Only show entries for the current language')),
                 ('tagged', models.CharField(max_length=255, blank=True)),

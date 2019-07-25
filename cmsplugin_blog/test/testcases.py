@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django import urls
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 
@@ -35,8 +35,8 @@ class BaseBlogTestCase(CMSTestCase):
         page.title_set.all().update(application_urls='BlogApphook')
         page.publish()
         home.publish()
-        reverse('blog_archive_index') # fill cache
-        
+        urls.reverse('blog_archive_index') # fill cache
+
     def create_entry_with_title(self, title=None, slug=None, language=None, published=False, published_at=None, author=None, **kwargs):
         entry_kwargs = {'is_published': published}
         if published_at:
@@ -44,7 +44,7 @@ class BaseBlogTestCase(CMSTestCase):
         entry = Entry.objects.create(**entry_kwargs)
         entrytitle = self.create_entry_title(entry, title=title, slug=slug, language=language, author=author, **kwargs)
         return (entrytitle, entry)
-        
+
     def create_entry_title(self, entry, title=None, slug=None, language=None, author=None, **kwargs):
         if not title:
             title = 'Entry title'

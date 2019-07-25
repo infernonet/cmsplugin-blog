@@ -1,6 +1,6 @@
+from django import urls
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.syndication.views import Feed
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from cms.utils import get_language_from_request
@@ -23,8 +23,8 @@ class EntriesFeed(Feed):
 
     def feed_url(self, obj):
         if self.any_language:
-            return add_current_root(reverse('blog_rss_any'))
-        return add_current_root(reverse('blog_rss'))
+            return add_current_root(urls.reverse('blog_rss_any'))
+        return add_current_root(urls.reverse('blog_rss'))
 
     def title(self, obj):
         if self.any_language or not is_multilingual():
@@ -32,7 +32,7 @@ class EntriesFeed(Feed):
         return _(u"%(site)s blog entries in %(lang)s") % {'site': self.site.name, 'lang': get_lang_name(self.language_code)}
 
     def link(self, obj):
-        return add_current_root(reverse('blog_archive_index'))
+        return add_current_root(urls.reverse('blog_archive_index'))
 
     def item_link(self, obj):
         return add_current_root(obj.get_absolute_url())
@@ -73,11 +73,11 @@ class TaggedEntriesFeed(EntriesFeed):
 
     def feed_url(self, obj):
         if self.any_language:
-            return add_current_root(reverse('blog_rss_any_tagged', kwargs={'tag': self.tag}))
-        return add_current_root(reverse('blog_rss_tagged', kwargs={'tag': self.tag}))
+            return add_current_root(urls.reverse('blog_rss_any_tagged', kwargs={'tag': self.tag}))
+        return add_current_root(urls.reverse('blog_rss_tagged', kwargs={'tag': self.tag}))
 
     def link(self, obj):
-        return add_current_root(reverse('blog_archive_tagged', kwargs={'tag': self.tag}))
+        return add_current_root(urls.reverse('blog_archive_tagged', kwargs={'tag': self.tag}))
 
     def description(self, obj):
         description = super(TaggedEntriesFeed, self).description(obj)
@@ -102,11 +102,11 @@ class AuthorEntriesFeed(EntriesFeed):
 
     def feed_url(self, obj):
         if self.any_language:
-            return add_current_root(reverse('blog_rss_any_author', kwargs={'author': self.author}))
-        return add_current_root(reverse('blog_rss_author', kwargs={'author': self.author}))
+            return add_current_root(urls.reverse('blog_rss_any_author', kwargs={'author': self.author}))
+        return add_current_root(urls.reverse('blog_rss_author', kwargs={'author': self.author}))
 
     def link(self, obj):
-        return add_current_root(reverse('blog_archive_author', kwargs={'slug': self.author}))
+        return add_current_root(urls.reverse('blog_archive_author', kwargs={'slug': self.author}))
 
     def description(self, obj):
         description = super(AuthorEntriesFeed, self).description(obj)
