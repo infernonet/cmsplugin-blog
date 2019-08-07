@@ -126,16 +126,23 @@ class AbstractEntryTitle(models.Model):
         return self.title
 
     def _get_absolute_url(self):
-        return ('blog_detail', (), {
-            'year': self.entry.pub_date.strftime('%Y'),
-            'month': self.entry.pub_date.strftime('%m'),
-            'day': self.entry.pub_date.strftime('%d'),
-            'slug': self.slug
-        })
+        return (
+            'blog_detail',
+            {
+                'args': (),
+                'kwargs': {
+                    'year': self.entry.pub_date.strftime('%Y'),
+                    'month': self.entry.pub_date.strftime('%m'),
+                    'day': self.entry.pub_date.strftime('%d'),
+                    'slug': self.slug,
+                }
+            }
+        )
 
     @property
     def get_absolute_url(self):
-        return urls.reverse(*(self._get_absolute_url()))
+        view_name, reverse_kwargs = self._get_absolute_url()
+        return urls.reverse(view_name, **reverse_kwargs)
 
     class Meta:
         unique_together = ('language', 'slug')
