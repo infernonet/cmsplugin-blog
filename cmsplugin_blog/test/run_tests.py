@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     'sekizai'
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -41,13 +41,13 @@ TEMPLATE_CONTEXT_PROCESSORS = [
 ]
 
 if django.VERSION[1] < 4:
-    MIDDLEWARE_CLASSES.append('django.contrib.csrf.middleware.CsrfViewMiddleware')
+    MIDDLEWARE.append('django.contrib.csrf.middleware.CsrfViewMiddleware')
     TEMPLATE_CONTEXT_PROCESSORS[0] = 'django.core.context_processors.auth'
 else:
-    MIDDLEWARE_CLASSES.append('django.middleware.locale.LocaleMiddleware')
+    MIDDLEWARE.append('django.middleware.locale.LocaleMiddleware')
 
 if django.VERSION[1] < 3: # pragma: no cover
-    MIDDLEWARE_CLASSES.insert(12, 'cbv.middleware.DeferredRenderingMiddleware')
+    MIDDLEWARE.insert(12, 'cbv.middleware.DeferredRenderingMiddleware')
     INSTALLED_APPS.append('staticfiles')
     INSTALLED_APPS.append('cbv')
     TEMPLATE_CONTEXT_PROCESSORS.insert(0,'django.core.context_processors.auth')
@@ -64,7 +64,7 @@ def run_tests():
     settings.configure(
         SITE_ID = 1,
         INSTALLED_APPS=INSTALLED_APPS,
-        MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES,
+        MIDDLEWARE = MIDDLEWARE,
         TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS,
         DATABASES = {
             'default': {

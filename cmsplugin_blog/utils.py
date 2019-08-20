@@ -10,7 +10,7 @@ def module_exists(str):
     return True
 
 def is_multilingual():
-    return 'cmsplugin_blog.middleware.MultilingualBlogEntriesMiddleware' in settings.MIDDLEWARE_CLASSES
+    return 'cmsplugin_blog.middleware.MultilingualBlogEntriesMiddleware' in settings.MIDDLEWARE
 
 def get_lang_name(lang):
     return _(dict(settings.LANGUAGES)[lang])
