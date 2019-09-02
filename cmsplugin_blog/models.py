@@ -139,7 +139,6 @@ class AbstractEntryTitle(models.Model):
             }
         )
 
-    @property
     def get_absolute_url(self):
         view_name, reverse_kwargs = self._get_absolute_url()
         return urls.reverse(view_name, **reverse_kwargs)
